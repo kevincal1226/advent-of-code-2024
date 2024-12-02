@@ -11,7 +11,10 @@ pub fn part_1() -> usize {
     });
     lhs.sort();
     rhs.sort();
-    (0..lhs.len()).map(|i| (rhs[i]).abs_diff(lhs[i])).sum()
+    lhs.iter()
+        .zip(rhs)
+        .map(|(i, j)| i.abs_diff(j))
+        .sum::<usize>()
 }
 
 pub fn part_2() -> usize {
