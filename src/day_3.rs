@@ -26,27 +26,22 @@ pub fn part_2() -> usize {
     let re = Regex::new(pattern).unwrap();
     let do_pattern = r"do\(\)(.*?)don't\(\)";
     let do_re = Regex::new(do_pattern).unwrap();
-    reader
+    let mut input = reader
         .lines()
         .map(|l| l.unwrap())
-        .map(|l| {
-            let mut res = "do()".to_owned();
-            res.push_str(&l);
-            res.push_str("don't()");
-            res
+        .fold("do()".to_owned(), |acc, s| acc + &s);
+
+    input.push_str("don't()");
+
+    do_re
+        .find_iter(&input)
+        .map(|mat| mat.as_str())
+        .flat_map(|mat| {
+            re.captures_iter(mat).map(|cap| {
+                let first_num = cap[1].parse::<usize>().unwrap();
+                let second_num = cap[2].parse::<usize>().unwrap();
+                first_num * second_num
+            })
         })
-        .map(|line| {
-            do_re
-                .find_iter(&line)
-                .map(|mat| mat.as_str())
-                .flat_map(|mat| {
-                    re.captures_iter(mat).map(|cap| {
-                        let first_num = cap[1].parse::<usize>().unwrap();
-                        let second_num = cap[2].parse::<usize>().unwrap();
-                        first_num * second_num
-                    })
-                })
-                .sum::<usize>()
-        })
-        .sum()
+        .sum::<usize>()
 }
