@@ -1,48 +1,36 @@
 use std::io::BufRead;
 
-fn search(grid: &Vec<Vec<char>>, row: usize, col: usize) -> usize {
-    let mut count = 0;
-    if grid[row + 1][col] == 'M' && grid[row + 2][col] == 'A' && grid[row + 3][col] == 'S' {
-        count += 1;
-    }
+const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
 
-    if grid[row - 1][col] == 'M' && grid[row - 2][col] == 'A' && grid[row - 3][col] == 'S' {
-        count += 1;
-    }
+const DIRECTIONS: [(i64, i64); 8] = [
+    (1, 0),
+    (0, 1),
+    (-1, 0),
+    (0, -1),
+    (1, 1),
+    (1, -1),
+    (-1, 1),
+    (-1, -1),
+];
 
-    if grid[row][col + 1] == 'M' && grid[row][col + 2] == 'A' && grid[row][col + 3] == 'S' {
-        count += 1;
+fn search(
+    grid: &Vec<Vec<char>>,
+    row: usize,
+    col: usize,
+    row_dx: i64,
+    col_dx: i64,
+    count: usize,
+) -> usize {
+    if count == 4 {
+        return 1;
     }
-
-    if grid[row][col - 1] == 'M' && grid[row][col - 2] == 'A' && grid[row][col - 3] == 'S' {
-        count += 1;
-    }
-
-    if grid[row + 1][col + 1] == 'M'
-        && grid[row + 2][col + 2] == 'A'
-        && grid[row + 3][col + 3] == 'S'
+    if grid[(row as i64 + (row_dx * count as i64)) as usize]
+        [(col as i64 + (col_dx * count as i64)) as usize]
+        != XMAS[count]
     {
-        count += 1;
+        return 0;
     }
-    if grid[row - 1][col + 1] == 'M'
-        && grid[row - 2][col + 2] == 'A'
-        && grid[row - 3][col + 3] == 'S'
-    {
-        count += 1;
-    }
-    if grid[row + 1][col - 1] == 'M'
-        && grid[row + 2][col - 2] == 'A'
-        && grid[row + 3][col - 3] == 'S'
-    {
-        count += 1;
-    }
-    if grid[row - 1][col - 1] == 'M'
-        && grid[row - 2][col - 2] == 'A'
-        && grid[row - 3][col - 3] == 'S'
-    {
-        count += 1;
-    }
-    count
+    search(grid, row, col, row_dx, col_dx, count + 1)
 }
 
 fn search2(grid: &Vec<Vec<char>>, row: usize, col: usize) -> usize {
@@ -50,7 +38,6 @@ fn search2(grid: &Vec<Vec<char>>, row: usize, col: usize) -> usize {
     let tr = grid[row - 1][col + 1];
     let br = grid[row + 1][col + 1];
     let bl = grid[row + 1][col - 1];
-    println!("{} {} {} {}", tl, tr, bl, br);
     if (tl != 'M' && tl != 'S')
         || (tr != 'M' && tr != 'S')
         || (br != 'M' && br != 'S')
@@ -85,7 +72,12 @@ pub fn part_1() -> usize {
             v.iter()
                 .enumerate()
                 .filter(|(_, c)| **c == 'X')
-                .map(|(col, _)| search(&grid, row, col))
+                .map(|(col, _)| {
+                    DIRECTIONS
+                        .iter()
+                        .map(|s| search(&grid, row, col, s.0, s.1, 0))
+                        .sum::<usize>()
+                })
                 .sum::<usize>()
         })
         .sum::<usize>()
