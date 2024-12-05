@@ -40,10 +40,7 @@ pub fn part_1() -> usize {
                 None
             }
         })
-        .map(|v| {
-            println!("{:?}", v);
-            v[v.len() / 2]
-        })
+        .map(|v| v[v.len() / 2])
         .sum()
 }
 
@@ -86,9 +83,6 @@ pub fn part_2() -> usize {
             }
             Some(new_v)
         })
-        .map(|v| {
-            println!("{:?}", v);
-            v[v.len() / 2]
-        })
+        .map(|v| v[v.len() / 2])
         .sum()
 }
