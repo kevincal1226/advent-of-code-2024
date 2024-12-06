@@ -84,7 +84,6 @@ pub fn part_2() -> usize {
         start_col = (start_col as i32 + DIRS[curr_dir].1) as usize;
         start_row = (start_row as i32 + DIRS[curr_dir].0) as usize;
     }
-    let mut fuck: HashSet<(usize, usize)> = HashSet::new();
     hs.iter()
         .filter(|s| s.0 != r || s.1 != c)
         .map(|s| (s.0, s.1, s.2))
@@ -92,9 +91,9 @@ pub fn part_2() -> usize {
             h.clear();
             let mut g = grid.clone();
             g[row][col] = '#';
-            start_row = (row as i32 - DIRS[dir].0) as usize;
-            start_col = (col as i32 - DIRS[dir].1) as usize;
-            curr_dir = dir;
+            start_row = r;
+            start_col = c;
+            curr_dir = 0;
             let mut hsx: HashSet<(usize, usize, usize)> = HashSet::new();
             while g[start_row][start_col] != 'X' {
                 if h.insert((start_row, start_col)) {
