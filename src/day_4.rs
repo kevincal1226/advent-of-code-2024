@@ -49,8 +49,8 @@ fn search2(grid: &Vec<Vec<char>>, row: usize, col: usize) -> usize {
     }
 }
 
-pub fn part_1() -> usize {
-    let reader = std::io::BufReader::new(std::fs::File::open("input/day_4.txt").unwrap());
+pub fn part_1(input: String) -> usize {
+    let reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let mut grid: Vec<Vec<char>> = reader
         .lines()
         .map(|l| l.unwrap())
@@ -83,8 +83,8 @@ pub fn part_1() -> usize {
         .sum::<usize>()
 }
 
-pub fn part_2() -> usize {
-    let reader = std::io::BufReader::new(std::fs::File::open("input/day_4.txt").unwrap());
+pub fn part_2(input: String) -> usize {
+    let reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let mut grid: Vec<Vec<char>> = reader
         .lines()
         .map(|l| l.unwrap())

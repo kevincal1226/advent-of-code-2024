@@ -1,8 +1,8 @@
 use regex::Regex;
 use std::io::BufRead;
 
-pub fn part_1() -> usize {
-    let reader = std::io::BufReader::new(std::fs::File::open("input/day_3.txt").unwrap());
+pub fn part_1(input: String) -> usize {
+    let reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let pattern = r"mul\((\d+),(\d+)\)";
     let re = Regex::new(pattern).unwrap();
     reader
@@ -20,8 +20,8 @@ pub fn part_1() -> usize {
         .sum()
 }
 
-pub fn part_2() -> usize {
-    let reader = std::io::BufReader::new(std::fs::File::open("input/day_3.txt").unwrap());
+pub fn part_2(input: String) -> usize {
+    let reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let pattern = r"mul\((\d+),(\d+)\)";
     let re = Regex::new(pattern).unwrap();
     let do_pattern = r"do\(\)(.*?)don't\(\)";

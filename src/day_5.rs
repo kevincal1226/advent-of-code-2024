@@ -11,8 +11,8 @@ fn is_valid(v: &[usize], ordering: &mut HashMap<usize, HashSet<usize>>) -> bool 
     })
 }
 
-pub fn part_1() -> usize {
-    let mut reader = std::io::BufReader::new(std::fs::File::open("input/day_5.txt").unwrap());
+pub fn part_1(input: String) -> usize {
+    let mut reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let mut ordering: HashMap<usize, HashSet<usize>> = HashMap::new();
     for line_res in reader.lines() {
         let line = line_res.unwrap();
@@ -44,8 +44,8 @@ pub fn part_1() -> usize {
         .sum()
 }
 
-pub fn part_2() -> usize {
-    let mut reader = std::io::BufReader::new(std::fs::File::open("input/day_5.txt").unwrap());
+pub fn part_2(input: String) -> usize {
+    let mut reader = std::io::BufReader::new(std::fs::File::open(input).unwrap());
     let mut ordering: HashMap<usize, HashSet<usize>> = HashMap::new();
     for line_res in reader.lines() {
         let line = line_res.unwrap();

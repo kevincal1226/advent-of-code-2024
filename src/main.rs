@@ -23,8 +23,13 @@ mod day_6;
 mod day_7;
 mod day_8;
 mod day_9;
+use std::env;
 
 fn main() {
-    println!("Part 1 Output: {}", day_6::part_1());
-    println!("Part 2 Output: {}", day_6::part_2());
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 2 {
+        panic!("Must specify an input path.\n");
+    }
+    println!("Part 1 Output: {}", day_6::part_1(args[1].clone()));
+    println!("Part 2 Output: {}", day_6::part_2(args[1].clone()));
 }

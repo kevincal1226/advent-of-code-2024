@@ -1,7 +1,7 @@
 use std::io::BufRead;
 
-pub fn part_1() -> usize {
-    std::io::BufReader::new(std::fs::File::open("input/day_2.txt").unwrap())
+pub fn part_1(input: String) -> usize {
+    std::io::BufReader::new(std::fs::File::open(input).unwrap())
         .lines()
         .map(|l| l.unwrap())
         .filter(|line| {
@@ -18,8 +18,8 @@ pub fn part_1() -> usize {
         .count()
 }
 
-pub fn part_2() -> usize {
-    std::io::BufReader::new(std::fs::File::open("input/day_2.txt").unwrap())
+pub fn part_2(input: String) -> usize {
+    std::io::BufReader::new(std::fs::File::open(input).unwrap())
         .lines()
         .map(|l| l.unwrap())
         .filter(|line| {

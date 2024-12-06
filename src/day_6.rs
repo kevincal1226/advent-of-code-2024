@@ -4,8 +4,8 @@ use std::io::{BufRead, BufReader};
 
 const DIRS: [(i32, i32); 4] = [(-1, 0), (0, 1), (1, 0), (0, -1)];
 
-pub fn part_1() -> usize {
-    let reader = BufReader::new(File::open("input/day_6.txt").unwrap());
+pub fn part_1(input: String) -> usize {
+    let reader = BufReader::new(File::open(input).unwrap());
     let mut start_row = 0;
     let mut start_col = 0;
     let mut hs: std::collections::HashSet<(usize, usize)> = std::collections::HashSet::new();
@@ -43,12 +43,10 @@ pub fn part_1() -> usize {
     hs.len()
 }
 
-pub fn part_2() -> usize {
-    let reader = BufReader::new(File::open("input/day_6.txt").unwrap());
-    let mut r = 0;
-    let mut c = 0;
-    let mut hs: std::collections::HashSet<(usize, usize, usize)> = std::collections::HashSet::new();
-    let mut h: HashSet<(usize, usize)> = HashSet::new();
+pub fn part_2(input: String) -> usize {
+    let reader = BufReader::new(File::open(input).unwrap());
+    let mut start_row = 0;
+    let mut start_col = 0;
     let mut grid: Vec<Vec<char>> = reader
         .lines()
         .map(|s| s.unwrap())
@@ -59,60 +57,46 @@ pub fn part_2() -> usize {
             res
         })
         .enumerate()
-        .map(|(row, line)| {
-            if line.contains('^') {
-                r = row + 1;
-                c = line.find('^').unwrap();
+        .map(|(row, s)| {
+            if s.contains('^') {
+                start_row = row + 1;
+                start_col = s.find('^').unwrap();
             }
-            line.chars().collect()
+            s.chars().collect()
         })
         .collect();
-    let mut start_row = r;
-    let mut start_col = c;
-    grid.push(vec!['X'; grid[0].len()]);
-    grid.insert(0, vec!['X'; grid[0].len()]);
-    let mut curr_dir = 0;
-    while grid[start_row][start_col] != 'X' {
-        if h.insert((start_row, start_col)) {
-            hs.insert((start_row, start_col, curr_dir));
-        }
-        let next_pos = grid[(start_row as i32 + DIRS[curr_dir].0) as usize]
-            [(start_col as i32 + DIRS[curr_dir].1) as usize];
-        if next_pos == '#' {
-            curr_dir = (curr_dir + 1) % 4;
-        }
-        start_col = (start_col as i32 + DIRS[curr_dir].1) as usize;
-        start_row = (start_row as i32 + DIRS[curr_dir].0) as usize;
-    }
-    hs.iter()
-        .filter(|s| s.0 != r || s.1 != c)
-        .map(|s| (s.0, s.1, s.2))
-        .map(|(row, col, dir)| {
-            h.clear();
-            let mut g = grid.clone();
-            g[row][col] = '#';
-            start_row = r;
-            start_col = c;
-            curr_dir = 0;
-            let mut hsx: HashSet<(usize, usize, usize)> = HashSet::new();
-            while g[start_row][start_col] != 'X' {
-                if h.insert((start_row, start_col)) {
-                    hsx.insert((start_row, start_col, curr_dir));
-                }
-                let next_pos = g[(start_row as i32 + DIRS[curr_dir].0) as usize]
-                    [(start_col as i32 + DIRS[curr_dir].1) as usize];
-                if next_pos == '#' {
-                    curr_dir = (curr_dir + 1) % 4;
-                    continue;
-                }
-                start_row = (start_row as i32 + DIRS[curr_dir].0) as usize;
-                start_col = (start_col as i32 + DIRS[curr_dir].1) as usize;
 
-                if hsx.contains(&(start_row, start_col, curr_dir)) {
-                    return 1;
-                }
-            }
-            0
+    grid.insert(0, vec!['X'; grid[0].len()]);
+    grid.push(vec!['X'; grid[0].len()]);
+    grid.iter()
+        .enumerate()
+        .map(|(row, v)| {
+            v.iter()
+                .enumerate()
+                .filter(|s| *s.1 == '.')
+                .map(|(col, _)| {
+                    let mut g_clone = grid.clone();
+                    g_clone[row][col] = '#';
+                    let mut visited: HashSet<(usize, usize, usize)> = HashSet::new();
+                    let mut curr_dir = 0;
+                    let mut curr_row = start_row;
+                    let mut curr_col = start_col;
+                    while g_clone[curr_row][curr_col] != 'X' {
+                        if !visited.insert((curr_row, curr_col, curr_dir)) {
+                            return 1;
+                        }
+                        while g_clone[(curr_row as i32 + DIRS[curr_dir].0) as usize]
+                            [(curr_col as i32 + DIRS[curr_dir].1) as usize]
+                            == '#'
+                        {
+                            curr_dir = (curr_dir + 1) % 4;
+                        }
+                        curr_row = (curr_row as i32 + DIRS[curr_dir].0) as usize;
+                        curr_col = (curr_col as i32 + DIRS[curr_dir].1) as usize;
+                    }
+                    0
+                })
+                .sum::<usize>()
         })
         .sum()
 }
