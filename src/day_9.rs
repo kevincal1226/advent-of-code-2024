@@ -64,6 +64,6 @@ pub fn part_2(file: String) -> usize {
         })
         .collect();
     let mut sum = 0;
-    let mut starting_idx = 0;
+
     sum
 }
