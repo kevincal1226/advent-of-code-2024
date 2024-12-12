@@ -1,5 +1,4 @@
 use cached::proc_macro::cached;
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -8,9 +7,9 @@ pub fn part_1(file: String) -> usize {
     let mut stoned: Vec<usize> = reader
         .lines()
         .flat_map(|line| {
-            line.expect("Failed to read line")
+            line.unwrap()
                 .split_whitespace() // Splits by spaces
-                .map(|num| num.parse::<usize>().expect("Failed to parse number"))
+                .map(|num| num.parse::<usize>().unwrap())
                 .collect::<Vec<usize>>() // Collect numbers into a Vec temporarily
         })
         .collect();
@@ -57,17 +56,15 @@ fn helper(val: usize, blink: usize) -> usize {
 
 pub fn part_2(file: String) -> usize {
     let reader = BufReader::new(File::open(file).unwrap());
-    let mut stoned: Vec<usize> = reader
+    let stoned: Vec<usize> = reader
         .lines()
         .flat_map(|line| {
-            line.expect("Failed to read line")
+            line.unwrap()
                 .split_whitespace() // Splits by spaces
-                .map(|num| num.parse::<usize>().expect("Failed to parse number"))
+                .map(|num| num.parse::<usize>().unwrap())
                 .collect::<Vec<usize>>() // Collect numbers into a Vec temporarily
         })
         .collect();
-
-    let mut memo: HashMap<usize, usize> = HashMap::new();
 
     stoned.iter().map(|x| helper(*x, 0)).sum()
 }
