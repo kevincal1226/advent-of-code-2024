@@ -8,9 +8,9 @@ pub fn part_1(file: String) -> usize {
         .lines()
         .flat_map(|line| {
             line.unwrap()
-                .split_whitespace() // Splits by spaces
+                .split_whitespace()
                 .map(|num| num.parse::<usize>().unwrap())
-                .collect::<Vec<usize>>() // Collect numbers into a Vec temporarily
+                .collect::<Vec<usize>>()
         })
         .collect();
 
@@ -60,9 +60,9 @@ pub fn part_2(file: String) -> usize {
         .lines()
         .flat_map(|line| {
             line.unwrap()
-                .split_whitespace() // Splits by spaces
+                .split_whitespace()
                 .map(|num| num.parse::<usize>().unwrap())
-                .collect::<Vec<usize>>() // Collect numbers into a Vec temporarily
+                .collect::<Vec<usize>>()
         })
         .collect();
 
