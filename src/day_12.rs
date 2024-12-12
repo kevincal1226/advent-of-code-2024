@@ -1,3 +1,4 @@
+use core::slice;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -85,11 +86,10 @@ pub fn part_2(input: String) -> usize {
                 .map(|c| c as i64)
                 .filter(|e| grid[row as usize][*e as usize] != '.')
                 .map(|col| {
-                    let mut edged: HashSet<(i64, i64, i64)> = HashSet::new();
                     let mut stack: std::collections::VecDeque<(i64, i64)> =
                         std::collections::VecDeque::new();
                     let mut area = 0;
-                    let mut perim = 0;
+                    let mut corners = 0;
                     let start_char = grid[row as usize][col as usize];
                     stack.push_front((row, col));
                     while let Some(temp) = stack.pop_back() {
@@ -98,25 +98,50 @@ pub fn part_2(input: String) -> usize {
                         {
                             continue;
                         }
+                        let adj = [
+                            grid[temp.0 as usize - 1][temp.1 as usize],
+                            grid[temp.0 as usize + 1][temp.1 as usize],
+                            grid[temp.0 as usize][temp.1 as usize - 1],
+                            grid[temp.0 as usize][temp.1 as usize + 1],
+                        ];
+                        match adj.iter().filter(|s| **s == start_char).count() {
+                            0 => corners += 4,
+                            1 => corners += 2,
+                            _ => {
+                                if (adj[0] != start_char || adj[1] != start_char)
+                                    && (adj[2] != start_char || adj[3] != start_char)
+                                {
+                                    corners += 1;
+                                }
+                                if adj[0] == start_char && adj[2] == start_char {
+                                    corners += (grid[temp.0 as usize - 1][temp.1 as usize - 1]
+                                        != start_char)
+                                        as usize;
+                                }
+                                if adj[0] == start_char && adj[3] == start_char {
+                                    corners += (grid[temp.0 as usize - 1][temp.1 as usize + 1]
+                                        != start_char)
+                                        as usize;
+                                }
+                                if adj[1] == start_char && adj[2] == start_char {
+                                    corners += (grid[temp.0 as usize + 1][temp.1 as usize - 1]
+                                        != start_char)
+                                        as usize;
+                                }
+                                if adj[1] == start_char && adj[3] == start_char {
+                                    corners += (grid[temp.0 as usize + 1][temp.1 as usize + 1]
+                                        != start_char)
+                                        as usize;
+                                }
+                            }
+                        }
                         area += 1;
-                        if grid[temp.0 as usize - 1][temp.1 as usize] != start_char {
-                            perim += 1;
-                        }
-                        if grid[temp.0 as usize + 1][temp.1 as usize] != start_char {
-                            perim += 1;
-                        }
-                        if grid[temp.0 as usize][temp.1 as usize + 1] != start_char {
-                            perim += 1;
-                        }
-                        if grid[temp.0 as usize][temp.1 as usize - 1] != start_char {
-                            perim += 1;
-                        }
                         stack.push_back((temp.0 + 1, temp.1));
                         stack.push_back((temp.0 - 1, temp.1));
                         stack.push_back((temp.0, temp.1 - 1));
                         stack.push_back((temp.0, temp.1 + 1));
                     }
-                    area * perim
+                    area * corners
                 })
                 .sum::<usize>()
         })
