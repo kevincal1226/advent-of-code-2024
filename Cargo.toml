@@ -5,4 +5,6 @@ edition = "2021"
 
 [dependencies]
 cached = "0.54.0"
+nalgebra = "0.33.2"
 regex = "1.11.1"
+scanf = "1.2.1"
