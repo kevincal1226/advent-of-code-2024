@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 cached = "0.54.0"
 nalgebra = "0.33.2"
+phf = { version = "0.11", features = ["macros"] }
 regex = "1.11.1"
 scan_fmt = "0.2.6"
 scanf = "1.2.1"
