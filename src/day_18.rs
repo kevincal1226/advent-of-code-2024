@@ -3,19 +3,18 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 pub fn part_1(file: String) -> usize {
-    0
-    //let mut reader = BufReader::new(File::open(file).unwrap()).lines();
-    //let mut grid: Vec<Vec<bool>> = vec![vec![true; 73]; 73];
-    //(0..1024).for_each(|_| {
-    //    let binding = reader.next().unwrap().unwrap();
-    //    let mut x = binding.split_terminator(",");
-    //    let (row, col) = (
-    //        x.next().unwrap().parse::<usize>().unwrap(),
-    //        x.next().unwrap().parse::<usize>().unwrap(),
-    //    );
-    //    grid[row + 1][col + 1] = false;
-    //});
-    //get_dicks_path(&grid).0
+    let mut reader = BufReader::new(File::open(file).unwrap()).lines();
+    let mut grid: Vec<Vec<bool>> = vec![vec![true; 73]; 73];
+    (0..1024).for_each(|_| {
+        let binding = reader.next().unwrap().unwrap();
+        let mut x = binding.split_terminator(",");
+        let (row, col) = (
+            x.next().unwrap().parse::<usize>().unwrap(),
+            x.next().unwrap().parse::<usize>().unwrap(),
+        );
+        grid[row + 1][col + 1] = false;
+    });
+    get_dicks_path(&grid).0
 }
 
 fn get_dicks_path(grid: &Vec<Vec<bool>>) -> (usize, HashSet<(usize, usize)>) {
@@ -72,13 +71,13 @@ fn get_dicks_path(grid: &Vec<Vec<bool>>) -> (usize, HashSet<(usize, usize)>) {
         });
     }
     let mut path: HashSet<(usize, usize)> = HashSet::new();
-    let mut r = 7;
-    let mut c = 7;
+    let mut r = 71;
+    let mut c = 71;
     while *prev.get(&(r, c)).unwrap() != (0, 0) {
         path.insert((r, c));
         (r, c) = *prev.get(&(r, c)).unwrap();
     }
-    (*distances.get(&(7, 7)).unwrap(), path)
+    (*distances.get(&(71, 71)).unwrap(), path)
 }
 
 fn bfs(row: usize, col: usize, grid: &Vec<Vec<bool>>, disco: &mut HashSet<(usize, usize)>) -> bool {
