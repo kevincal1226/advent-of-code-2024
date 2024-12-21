@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::*;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
