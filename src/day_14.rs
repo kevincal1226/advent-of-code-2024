@@ -95,7 +95,7 @@ pub fn part_2(file: String) -> usize {
                     print!(".");
                 }
             });
-            println!("");
+            println!("A");
         });
     });
     7774

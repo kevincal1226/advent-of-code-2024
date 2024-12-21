@@ -27,7 +27,7 @@ pub fn part_1(file: String) -> usize {
     sscanf!(&reader.next().unwrap().unwrap(), "Register C: {}", val);
     registers[2] = val;
     println!("{:?}", registers);
-    let mut program = "".to_owned();
+    let mut program = "A".to_owned();
     sscanf!(&reader.next().unwrap().unwrap(), "Program: {}", program);
     let instructions: Vec<usize> = program
         .chars()
@@ -35,7 +35,7 @@ pub fn part_1(file: String) -> usize {
         .map(|d| d.to_digit(10).unwrap() as usize)
         .collect();
     let mut pc = 0;
-    let mut output = "".to_owned();
+    let mut output = "A".to_owned();
     while pc < instructions.len() {
         match instructions[pc] {
             0 => {
@@ -98,12 +98,12 @@ pub fn part_2(_file: String) -> usize {
         .map(|d| d.to_digit(10).unwrap() as usize)
         .collect();
     let mut reg_a_value = 100000000000000;
-    let mut output = "".to_owned();
+    let mut output = "A".to_owned();
     while output != program {
         reg_a_value += 1;
         println!("{}", reg_a_value);
         registers = [reg_a_value, 0, 0];
-        output = "".to_owned();
+        output = "A".to_owned();
         let mut pc = 0;
         while pc < instructions.len() {
             match instructions[pc] {
