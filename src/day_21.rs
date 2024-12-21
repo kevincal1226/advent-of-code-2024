@@ -348,33 +348,32 @@ pub fn part_2(file: String) -> usize {
             println!("{:?}", keypad_robot);
 
             keypad_robot.insert(0, 'A');
+            let mut first_cont_robot: String = keypad_robot
+                .chars()
+                .collect::<Vec<char>>()
+                .windows(2)
+                .flat_map(|window| {
+                    CONTROLLERS
+                        .get(&window[0])
+                        .unwrap()
+                        .get(&window[1])
+                        .unwrap()
+                        .to_string()
+                        .chars()
+                        .collect::<Vec<char>>()
+                })
+                .collect();
 
-            let mut first_cont_robot = keypad_robot.clone();
-            let mut second_cont_robot = "A".to_string();
+            println!("{first_cont_robot:?}");
 
-            (0..25).for_each(|i| {
-                println!("Iteration: {i}");
+            first_cont_robot.insert(0, 'A');
 
-                let split_by_as: Vec<String> = first_cont_robot
-                    .split_inclusive("A")
-                    .map(|e| e.to_string())
-                    .collect();
-                println!("{split_by_as:?}");
-
-                split_by_as.iter().for_each(|s| {
-                    second_cont_robot.push_str(&get_path(s.clone()));
-                });
-
-                println!("{second_cont_robot}");
-
-                first_cont_robot = second_cont_robot.to_owned();
-
-                second_cont_robot = "A".to_string();
-            });
-
-            //println!("{second_cont_robot:?}");
-
-            println!("{}", first_cont_robot.len());
+            let res: String = first_cont_robot
+                .chars()
+                .collect::<Vec<char>>()
+                .windows(2)
+                .flat_map(|w| solve(w[0], w[1], 0).chars().collect::<Vec<char>>())
+                .collect();
 
             let parsed_num: usize = line
                 .chars()
@@ -383,27 +382,33 @@ pub fn part_2(file: String) -> usize {
                 .parse::<usize>()
                 .unwrap();
 
+            println!("{res}");
             println!("{parsed_num}\n");
 
-            second_cont_robot.len() * parsed_num
+            res.len() * parsed_num
         })
         .sum()
 }
 
 #[cached]
-fn get_path(path: String) -> String {
-    path.chars()
+fn solve(start: char, end: char, count: usize) -> String {
+    if count == 25 {
+        return get_path(start, end);
+    }
+    get_path(start, end)
+        .chars()
         .collect::<Vec<char>>()
         .windows(2)
-        .flat_map(|window| {
-            CONTROLLERS
-                .get(&window[0])
-                .unwrap()
-                .get(&window[1])
-                .unwrap()
-                .to_string()
-                .chars()
-                .collect::<Vec<char>>()
-        })
+        .flat_map(|e| solve(e[0], e[1], count + 1).chars().collect::<Vec<char>>())
         .collect()
+}
+
+#[cached]
+fn get_path(start: char, end: char) -> String {
+    CONTROLLERS
+        .get(&start)
+        .unwrap()
+        .get(&end)
+        .unwrap()
+        .to_string()
 }
