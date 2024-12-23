@@ -30,6 +30,6 @@ fn main() {
     if args.len() != 2 {
         panic!("Must specify an input path.\n");
     }
-    println!("Part 1 Output: {}", day_22::part_1(args[1].clone()));
-    println!("Part 2 Output: {}", day_22::part_2(args[1].clone()));
+    println!("Part 1 Output: {}", day_23::part_1(args[1].clone()));
+    println!("Part 2 Output: {}", day_23::part_2(args[1].clone()));
 }
