@@ -104,24 +104,31 @@ pub fn part_2(file: String) -> usize {
                         for n in m + 1..edges_original.len() {
                             for o in n + 1..edges_original.len() {
                                 for p in o + 1..edges_original.len() {
-                                    println!("{p}");
-                                    let mut edges = edges_original.clone();
-                                    std::mem::swap(
-                                        &mut edges.iter().nth(i).unwrap(),
-                                        &mut edges.iter().nth(j).unwrap(),
-                                    );
-                                    std::mem::swap(
-                                        &mut edges.iter().nth(k).unwrap(),
-                                        &mut edges.iter().nth(l).unwrap(),
-                                    );
-                                    std::mem::swap(
-                                        &mut edges.iter().nth(m).unwrap(),
-                                        &mut edges.iter().nth(n).unwrap(),
-                                    );
-                                    std::mem::swap(
-                                        &mut edges.iter().nth(o).unwrap(),
-                                        &mut edges.iter().nth(p).unwrap(),
-                                    );
+                                    let mut peen: Vec<(String, String, String, String)> =
+                                        edges_original.iter().cloned().collect();
+                                    let mut ai = peen[i].clone();
+                                    let mut aj = peen[j].clone();
+                                    let mut ak = peen[k].clone();
+                                    let mut al = peen[l].clone();
+                                    let mut am = peen[m].clone();
+                                    let mut an = peen[n].clone();
+                                    let mut ao = peen[o].clone();
+                                    let mut ap = peen[p].clone();
+                                    std::mem::swap(&mut ai.3, &mut aj.3);
+                                    std::mem::swap(&mut ak.3, &mut al.3);
+                                    std::mem::swap(&mut am.3, &mut an.3);
+                                    std::mem::swap(&mut ao.3, &mut ap.3);
+                                    peen[i] = ai;
+                                    peen[j] = aj;
+                                    peen[k] = ak;
+                                    peen[l] = al;
+                                    peen[m] = am;
+                                    peen[n] = an;
+                                    peen[o] = ao;
+                                    peen[p] = ap;
+                                    let mut edges: HashSet<(String, String, String, String)> =
+                                        peen.iter().cloned().collect();
+
                                     loop {
                                         let to_remove: Vec<(String, String, String, String)> =
                                             edges
@@ -186,7 +193,19 @@ pub fn part_2(file: String) -> usize {
                                         })
                                         .sum();
                                     if x + y == z {
+                                        println!(
+                                            "{}, {}, {}, {}, {}, {}, {}, {}",
+                                            edges_original.iter().nth(i).unwrap().3,
+                                            edges_original.iter().nth(j).unwrap().3,
+                                            edges_original.iter().nth(k).unwrap().3,
+                                            edges_original.iter().nth(l).unwrap().3,
+                                            edges_original.iter().nth(m).unwrap().3,
+                                            edges_original.iter().nth(n).unwrap().3,
+                                            edges_original.iter().nth(o).unwrap().3,
+                                            edges_original.iter().nth(p).unwrap().3
+                                        );
                                         println!("WE FOUND IT BOYS");
+                                        panic!("DONE");
                                     }
                                     //println!("{}, {}, {}", x, y, z);
                                 }
