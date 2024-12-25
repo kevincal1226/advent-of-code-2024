@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 cached = "0.54.0"
+multiset = "0.0.5"
 nalgebra = "0.33.2"
 phf = { version = "0.11", features = ["macros"] }
 regex = "1.11.1"
